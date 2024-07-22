@@ -4,13 +4,31 @@ const Users = db.users; // Model User
 
 exports.getUsers = async () => {
   try {
+    const data = await Users.findAll();
     return {
       status: 200,
-      data: {
-        name: "Salman Rivaldi",
-        email: "rivaldysalman@gmail.com",
-        address: "Jalan Tandi, Ateuk Jawo",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: "Gagal mengambil data user",
+      error: error.message,
+    };
+  }
+};
+
+exports.getUser = async (useId) => {
+  try {
+    const data = await Users.findOne({
+      where: {
+        id: useId,
       },
+    });
+
+    return {
+      status: 200,
+      data,
     };
   } catch (error) {
     return {
@@ -47,6 +65,54 @@ exports.createUser = async (req) => {
     //     address,
     //   },
     // };
+  } catch (error) {
+    return {
+      status: 500,
+      message: "Gagal menyimpan data user",
+      error: error.message,
+    };
+  }
+};
+
+exports.updateUser = async (req, userId) => {
+  try {
+    Users.update(
+      {
+        name: req.body.name,
+        email: req.body.email,
+      },
+      {
+        where: {
+          id: userId,
+        },
+      }
+    );
+
+    return {
+      status: 200,
+      message: "Berhasil mengupdate data user.",
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: "Gagal menyimpan data user",
+      error: error.message,
+    };
+  }
+};
+
+exports.deleteUser = async (req, userId) => {
+  try {
+    Users.destroy({
+      where: {
+        id: userId,
+      },
+    });
+
+    return {
+      status: 200,
+      message: "Berhasil menyimpan menghapus user.",
+    };
   } catch (error) {
     return {
       status: 500,
