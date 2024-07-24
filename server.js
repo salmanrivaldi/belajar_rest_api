@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
+const authRoutes = require('./apps/routes/auth.route')
 const userRoutes = require("./apps/routes/user.route");
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.get("/", (_req, res) => {
 //   .filter((file) => file.endsWith(".routes.js"))
 //   .map((file) => [`/${file.replace(".routes.js", "")}`, require(path.join(__dirname, routesDirectory, file))]);
 
+app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 
 module.exports = app.listen(port, () => {

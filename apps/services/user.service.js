@@ -1,3 +1,4 @@
+const bcrypt = require("bcryptjs");
 const db = require("../../db/models/index");
 
 const Users = db.users; // Model User
@@ -41,30 +42,20 @@ exports.getUser = async (useId) => {
 
 exports.createUser = async (req) => {
   try {
+    const { name, password, email } = req.body;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     Users.create({
-      name: req.body.name,
-      email: "rivaldysalman@gmai.com",
+      name,
+      email,
+      password: hashedPassword,
     });
 
     return {
       status: 200,
       message: "Berhasil menyimpan data user.",
     };
-
-    // Cara 1
-    // const name = req.body.name;
-    // const email = req.body.email;
-    // const address = req.body.address;
-    // Cara 2 -> Destructuring object
-    // const { name, email, address } = req.body;
-    // return {
-    //   status: 200,
-    //   data: {
-    //     name,
-    //     email,
-    //     address,
-    //   },
-    // };
   } catch (error) {
     return {
       status: 500,

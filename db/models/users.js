@@ -20,6 +20,11 @@ module.exports = (sequelize) => {
       allowNull: true,
       field: "email",
     },
+    password: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      field: "password",
+    },
     created_at: {
       type: DataTypes.DATE(),
       allowNull: false,
